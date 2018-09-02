@@ -1,0 +1,157 @@
+{% extends '../model.twig' %}
+
+{% block title %}Account{% endblock %}
+
+{% block head %}
+    <link href="css/password.css" rel="stylesheet" media="all">
+{% endblock %}
+
+{% block container %}
+    <div class="col-lg-6">
+        <div class="card">
+            <div class="card-header">Passwort ändern</div>
+            <div class="card-body card-block">
+                <form action="" method="post" class="">
+                    <div class="form-group">
+                        <div class="input-group">
+                            <div class="input-group-addon">
+                                <i class="fa fa-asterisk"></i>
+                            </div>
+                            <input type="password" id="oldPassword" name="oldPassword" placeholder="Altes Passwort"
+                                   class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <div class="input-group-addon">
+                                <i class="fa fa-asterisk"></i>
+                            </div>
+                            <input type="password" id="newPassword" name="newPassword" placeholder="Neues Passwort"
+                                   pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+                                   class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <div class="input-group-addon">
+                                <i class="fa fa-asterisk"></i>
+                            </div>
+                            <input type="password" id="repeatedPassword" name="repeatedPassword"
+                                   placeholder="Passwort wiederholen"
+                                   class="form-control">
+                        </div>
+                    </div>
+
+                    <div id="message">
+                        <h3>Passwort muss folgendes beinhalten:</h3>
+                        <p id="letter" class="invalid">Einen <b>kleinen</b> Buchstaben</p>
+                        <p id="capital" class="invalid">Einen <b>großen</b> Buchstaben</p>
+                        <p id="number" class="invalid">Eine <b>Zahl</b></p>
+                        <p id="length" class="invalid">Mindestens <b>8 Zeichen</b></p>
+                        <p id="compare" class="invalid">Passwort stimmt mit Wiederholung überein</p>
+                    </div>
+
+                    <div class="form-actions form-group">
+                        <button id="abschicken" type="submit" class="btn btn-success btn-sm" disabled>Passwort ändern
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script>
+        var myInput = document.getElementById("newPassword");
+        var letter = document.getElementById("letter");
+        var capital = document.getElementById("capital");
+        var number = document.getElementById("number");
+        var length = document.getElementById("length");
+
+        var inputCompare = document.getElementById("repeatedPassword");
+
+        var compare = document.getElementById("compare");
+
+        document.getElementById("message").style.display = "block";
+        /*
+
+        myInput.onblur = function () {
+            document.getElementById("message").style.display = "none";
+        }*/
+
+        myInput.onkeyup = action;
+        inputCompare.onkeyup = action;
+
+        var complete = [false, false, false, false, false]
+
+        function action() {
+            // Validate lowercase letters
+            var lowerCaseLetters = /[a-z]/g;
+            if (myInput.value.match(lowerCaseLetters)) {
+                letter.classList.remove("invalid");
+                letter.classList.add("valid");
+                complete[0] = true;
+            } else {
+                letter.classList.remove("valid");
+                letter.classList.add("invalid");
+                complete[0] = false;
+            }
+
+            // Validate capital letters
+            var upperCaseLetters = /[A-Z]/g;
+            if (myInput.value.match(upperCaseLetters)) {
+                capital.classList.remove("invalid");
+                capital.classList.add("valid");
+                complete[1] = true;
+            } else {
+                capital.classList.remove("valid");
+                capital.classList.add("invalid");
+                complete[1] = true;
+            }
+
+            // Validate numbers
+            var numbers = /[0-9]/g;
+            if (myInput.value.match(numbers)) {
+                number.classList.remove("invalid");
+                number.classList.add("valid");
+                complete[2] = true;
+            } else {
+                number.classList.remove("valid");
+                number.classList.add("invalid");
+                complete[2] = true;
+            }
+
+            // Validate length
+            if (myInput.value.length >= 8) {
+                length.classList.remove("invalid");
+                length.classList.add("valid");
+                complete[3] = true;
+            } else {
+                length.classList.remove("valid");
+                length.classList.add("invalid");
+                complete[3] = true;
+            }
+
+            if (myInput.value === inputCompare.value) {
+                compare.classList.remove("invalid");
+                compare.classList.add("valid");
+                complete[4] = true;
+            } else {
+                compare.classList.remove("valid");
+                compare.classList.add("invalid");
+                complete[4] = true;
+            }
+            checkComplete();
+        }
+
+        function checkComplete() {
+            var complete = true;
+            complete.forEach(function (item, index, array) {
+                if (item !== true) {
+                    complete = false;
+                }
+            });
+
+            document.getElementById("abschicken").disabled = !complete;
+
+        }
+    </script>
+{% endblock %}
