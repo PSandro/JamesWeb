@@ -1,6 +1,5 @@
-const HashMap = require('hashmap');
 const crypto = require('crypto');
-const bindings = new HashMap();
+const bindings = new Map();
 
 class LoginToken {
 

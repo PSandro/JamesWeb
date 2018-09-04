@@ -1,6 +1,5 @@
 const crypto = require('crypto');
-const HashMap = require('hashmap');
-const sessions = new HashMap();
+const sessions = new Map();
 
 function Session(user) {
     this.user = user;
